@@ -1,5 +1,9 @@
 package common
 
+import (
+	"time"
+)
+
 type CommonError struct {
 	Errors map[string]interface{} `json:"errors"`
 }
@@ -10,4 +14,8 @@ func NewError(key string, err error) CommonError {
 	res.Errors = make(map[string]interface{})
 	res.Errors[key] = err.Error()
 	return res
+}
+
+func MakeTimeStamp() int64 {
+	return time.Now().UnixNano() / int64(time.Second)
 }

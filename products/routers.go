@@ -1,8 +1,12 @@
 package products
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
+	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/LiboMa/craftshop/common"
 	"github.com/gin-gonic/gin"
@@ -13,7 +17,7 @@ import (
 // "strconv"
 
 func ProductsRegister(router *gin.RouterGroup) {
-	//router.POST("/", ProductCreate)
+	router.POST("/", ProductCreate)
 	//router.PUT("/:slug", ProductUpdate)
 	//router.DELETE("/:slug", ProductDelete)
 	//router.POST("/:slug/favorite", ProductFavorite)
@@ -24,7 +28,7 @@ func ProductsRegister(router *gin.RouterGroup) {
 
 func ProductsAnonymousRegister(router *gin.RouterGroup) {
 	router.GET("/", ProductList)
-	//router.GET("/:slug", ProductRetrieve)
+	router.GET("/:id", ProductRetrieve)
 	//router.GET("/:slug/comments", ProductCommentList)
 }
 
@@ -53,4 +57,51 @@ func ProductList(c *gin.Context) {
 
 	serializer := ProductsSerializer{c, productList}
 	c.JSON(http.StatusOK, gin.H{"products": serializer.Response()})
+}
+
+func ProductRetrieve(c *gin.Context) {
+	//id := c.Param("id")
+	id, err := strconv.Atoi(c.Param("id"))
+	productmodel, err := GetProductByID(&Products{ID: id})
+	if err != nil {
+		c.JSON(http.StatusNotFound, common.NewError("product", errors.New("Invalid slug")))
+		return
+	}
+
+	fmt.Println(productmodel)
+	serializer := ProductSerializer{c, productmodel}
+	c.JSON(http.StatusOK, gin.H{"product": serializer.Response()})
+}
+
+func ProductCreate(c *gin.Context) {
+
+	data := `{"name":"english_A3",
+	"model":"A3",
+	"price":999,
+	"description":"english lessons for children age of 6",
+	"image_url":"http://s3.edushop.com/static/images/en_a3.jepg",
+	"video_url":"http://s3.edushop.com/static/images/en_a3.jepg",
+	"Capacity":99
+	}`
+
+	var product Products
+	err := json.Unmarshal([]byte(data), &product)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	product.Created_on = common.MakeTimeStamp()
+	product.Created_by = "admin"
+	product.Modified_on = common.MakeTimeStamp()
+	product.Modified_by = "admin"
+	product.Modified_by = "admin"
+	product.Labels = "test_lebels"
+	product.State = 1
+
+	fmt.Println("fe convert product: ", product)
+	CreateProduct(&product)
+
+	serializer := ProductSerializer{c, product}
+	c.JSON(http.StatusCreated, gin.H{"product": serializer.Response(), "result": "OK"})
+
 }

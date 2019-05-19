@@ -1,26 +1,28 @@
 package products
 
 import (
+	"fmt"
 	_ "fmt"
+	"log"
 
 	"github.com/LiboMa/craftshop/common"
 )
 
 type Products struct {
-	id          int     `id`
-	name        string  `product_name`
-	model       string  `model`
-	price       float32 `price`
-	description string  `desc`
-	image_url   string  `image_url`
-	video_url   string  `video_url`
-	capacity    int     `capacity`
-	created_on  int     `create_at`
-	created_by  string  `created_by`
-	modified_on int     `modified_on`
-	modified_by string  `modified_by`
-	labels      string  `labels`
-	state       int     `state`
+	ID          int     `db:"id"`
+	Name        string  `db:"name"`
+	Model       string  `db:"model"`
+	Price       float64 `db:"price"`
+	Description string  `db:"description"`
+	Image_url   string  `db:"image_url"`
+	Video_url   string  `db:"video_url"`
+	Capacity    int     `db:"capacity"`
+	Created_on  int64   `db:"create_on"`
+	Created_by  string  `db:"created_by"`
+	Modified_on int64   `db:"modified_on"`
+	Modified_by string  `db:"modified_by"`
+	Labels      string  `db:"labels"`
+	State       int     `db:"state"`
 }
 
 func GetProductList() ([]Products, error) {
@@ -31,7 +33,7 @@ func GetProductList() ([]Products, error) {
 	productList := make([]Products, 0)
 	for rows.Next() {
 		var p Products
-		rows.Scan(&p.id, &p.name, &p.model, &p.price, &p.description, &p.image_url, &p.video_url, &p.capacity)
+		rows.Scan(&p.ID, &p.Name, &p.Model, &p.Price, &p.Description, &p.Image_url, &p.Video_url, &p.Capacity)
 		productList = append(productList, p)
 	}
 
@@ -39,18 +41,29 @@ func GetProductList() ([]Products, error) {
 
 }
 
-func GetProductListShort() ([]Products, error) {
+//func GetProduct(p Products) ProductModel {
+//}
 
-	_sql := "SELECT id, name from shop_products"
-	rows, err := common.FetchAll(_sql)
+func GetProductByID(p *Products) (Products, error) {
+	_sql := "SELECT id, name, price, model, description, image_url, video_url, capacity FROM shop_products WHERE id = ?"
 
-	productList := make([]Products, 0)
+	rows, err := common.FetchOne(_sql, p.ID)
+
 	for rows.Next() {
-		var p Products
-		rows.Scan(&p.id, &p.name)
-		productList = append(productList, p)
+		rows.StructScan(p)
+	}
+	fmt.Printf("p: %T, %v\n", p, p)
+	return *p, err
+}
+
+func CreateProduct(p *Products) {
+
+	_sql, err := common.CreateQuery(*p, "shop_products")
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	return productList, err
-
+	//fmt.Println(_sql)
+	db := common.Getdb()
+	db.Exec(_sql)
 }

@@ -1,8 +1,10 @@
 package common
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"reflect"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -31,19 +33,77 @@ func InitDB() *sqlx.DB {
 	return DB
 }
 
-func FetchOne(query string, cond interface{}) *sqlx.Row {
+func FetchOne(query string, cond interface{}) (*sqlx.Rows, error) {
 
-	return DB.QueryRowx(query, cond)
+	rows, err := DB.Queryx(query, cond)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	return rows, err
 }
 
-func FetchAll(sql_query string) (*sqlx.Rows, error) {
+func FetchAll(query string) (*sqlx.Rows, error) {
 
-	rows, err := DB.Queryx(sql_query)
+	rows, err := DB.Queryx(query)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	return rows, err
+
+}
+
+func CreateQuery(q interface{}, tname string) (string, error) {
+
+	log.Println("etnry query:", q)
+	var err error
+
+	if reflect.ValueOf(q).Kind() == reflect.Struct {
+		//tname := reflect.TypeOf(q).Name()
+		fmt.Println(q)
+		query := fmt.Sprintf("INSERT INTO `%s` VALUES(", tname)
+		v := reflect.ValueOf(q)
+		for i := 0; i < v.NumField(); i++ {
+			switch v.Field(i).Kind() {
+			case reflect.Int:
+				if i == 0 {
+					query = fmt.Sprintf("%s%d", query, v.Field(i).Int())
+				} else {
+					query = fmt.Sprintf("%s, %d", query, v.Field(i).Int())
+				}
+			case reflect.Int64:
+				if i == 0 {
+					query = fmt.Sprintf("%s%d", query, v.Field(i).Int())
+				} else {
+					query = fmt.Sprintf("%s, %d", query, v.Field(i).Int())
+				}
+			case reflect.Float64:
+				if i == 0 {
+					query = fmt.Sprintf("%s%f", query, v.Field(i).Float())
+				} else {
+					query = fmt.Sprintf("%s, %f", query, v.Field(i).Float())
+				}
+			case reflect.String:
+				if i == 0 {
+					query = fmt.Sprintf("%s\"%s\"", query, v.Field(i).String())
+				} else {
+					query = fmt.Sprintf("%s, \"%s\"", query, v.Field(i).String())
+				}
+			default:
+				fmt.Println("Unsupported type")
+				return "", err
+			}
+		}
+		query = fmt.Sprintf("%s)", query)
+		log.Println(query)
+		fmt.Println(query)
+		return query, nil
+
+	}
+	log.Println("unsupported type")
+	//err := errors.New("unsupported type")
+	return "", err
 
 }
 
