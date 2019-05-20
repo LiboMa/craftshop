@@ -1,7 +1,6 @@
 package products
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -18,7 +17,7 @@ import (
 
 func ProductsRegister(router *gin.RouterGroup) {
 	router.POST("/", ProductCreate)
-	//router.PUT("/:slug", ProductUpdate)
+	router.PUT("/:id", ProductUpdate)
 	//router.DELETE("/:slug", ProductDelete)
 	//router.POST("/:slug/favorite", ProductFavorite)
 	//router.DELETE("/:slug/favorite", ProductUnfavorite)
@@ -47,7 +46,6 @@ func ProductList(c *gin.Context) {
 	//articleModels, modelCount, err := FindManyArticle(tag, author, limit, offset, favorited)
 
 	// serialized to json
-
 	if err != nil {
 		c.JSON(http.StatusNotFound, common.NewError("products", errors.New("Invalid param")))
 		return
@@ -62,9 +60,9 @@ func ProductList(c *gin.Context) {
 func ProductRetrieve(c *gin.Context) {
 	//id := c.Param("id")
 	id, err := strconv.Atoi(c.Param("id"))
-	productmodel, err := GetProductByID(&Products{ID: id})
+	productmodel, err := GetProductByID(id)
 	if err != nil {
-		c.JSON(http.StatusNotFound, common.NewError("product", errors.New("Invalid slug")))
+		c.JSON(http.StatusNotFound, common.NewError("product", errors.New("Invalid id")))
 		return
 	}
 
@@ -75,33 +73,66 @@ func ProductRetrieve(c *gin.Context) {
 
 func ProductCreate(c *gin.Context) {
 
-	data := `{"name":"english_A3",
-	"model":"A3",
-	"price":999,
-	"description":"english lessons for children age of 6",
-	"image_url":"http://s3.edushop.com/static/images/en_a3.jepg",
-	"video_url":"http://s3.edushop.com/static/images/en_a3.jepg",
-	"Capacity":99
-	}`
+	// data is the test data supposed received from request body
+	// data := `{"name":"english_A3",
+	// "model":"A3",
+	// "price":999,
+	// "description":"english lessons for children age of 6",
+	// "image_url":"http://s3.edushop.com/static/images/en_a3.jepg",
+	// "video_url":"http://s3.edushop.com/static/images/en_a3.jepg",
+	// "Capacity":99
+	// }`
 
 	var product Products
-	err := json.Unmarshal([]byte(data), &product)
-	if err != nil {
-		log.Fatal(err)
-	}
 
+	// validator should be added here..
+	c.ShouldBind(&product)
+
+	//log.Println(reflect.TypeOf(product))
 	product.Created_on = common.MakeTimeStamp()
 	product.Created_by = "admin"
 	product.Modified_on = common.MakeTimeStamp()
-	product.Modified_by = "admin"
 	product.Modified_by = "admin"
 	product.Labels = "test_lebels"
 	product.State = 1
 
 	fmt.Println("fe convert product: ", product)
 	CreateProduct(&product)
+	c.JSON(http.StatusCreated, gin.H{"product": product})
 
-	serializer := ProductSerializer{c, product}
-	c.JSON(http.StatusCreated, gin.H{"product": serializer.Response(), "result": "OK"})
+	//=======
+	// err := json.Unmarshal([]byte(data), &product)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// product.Created_on = common.MakeTimeStamp()
+	// product.Created_by = "admin"
+	// product.Modified_on = common.MakeTimeStamp()
+	// product.Modified_by = "admin"
+	// product.Labels = "test_lebels"
+	// product.State = 1
+
+	// serializer := ProductSerializer{c, product}
+	// c.JSON(http.StatusCreated, gin.H{"product": serializer.Response(), "result": "OK"})
+
+}
+
+func ProductUpdate(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+
+	var product Products
+	//var product_body Products
+	c.ShouldBind(&product)
+
+	productmodel, err := GetProductByID(id)
+
+	log.Println(productmodel)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{"product": product, "status": "updated"})
 
 }

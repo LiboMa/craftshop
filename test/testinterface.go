@@ -40,13 +40,16 @@ func handleObj(arg interface{}) {
 
 	v := reflect.ValueOf(arg)
 	fmt.Println("Number of fields", v.NumField())
+	//fmt.Println("Number of fields", v.NumField()[0])
 	for i := 0; i < v.NumField(); i++ {
-		fmt.Printf("Field:%d type:%T value:%v\n", i, v.Field(i), v.Field(i))
+		fmt.Printf("Field:%d type:%T value:%v, VTYPE: %s\n", i, v.Field(i), v.Field(i), v.Type())
 	}
 }
 
 func CreateQuery(q interface{}, tname string) {
 
+	v := reflect.ValueOf(q).Elem()
+	fmt.Println("------>", v)
 	if reflect.ValueOf(q).Kind() == reflect.Struct {
 		//tname := reflect.TypeOf(q).Name()
 		query := fmt.Sprintf("INSERT INTO `%s` VALUES(", tname)
@@ -115,6 +118,6 @@ func main() {
 	fmt.Println(u)
 	check(a, b, c, test, dict, uobj)
 	handleObj(uobj)
-	CreateQuery(uobj, "products")
+	//CreateQuery(uobj, "products")
 
 }

@@ -17,7 +17,7 @@ type Products struct {
 	Image_url   string  `db:"image_url"`
 	Video_url   string  `db:"video_url"`
 	Capacity    int     `db:"capacity"`
-	Created_on  int64   `db:"create_on"`
+	Created_on  int64   `db:"created_on"`
 	Created_by  string  `db:"created_by"`
 	Modified_on int64   `db:"modified_on"`
 	Modified_by string  `db:"modified_by"`
@@ -44,16 +44,22 @@ func GetProductList() ([]Products, error) {
 //func GetProduct(p Products) ProductModel {
 //}
 
-func GetProductByID(p *Products) (Products, error) {
-	_sql := "SELECT id, name, price, model, description, image_url, video_url, capacity FROM shop_products WHERE id = ?"
+func GetProductByID(id int) (Products, error) {
+	//_sql := "SELECT id, name, price, model, description, image_url, video_url, capacity FROM shop_products WHERE id = ?"
+	_sql := "SELECT * FROM shop_products WHERE id = ? Limit 1"
 
-	rows, err := common.FetchOne(_sql, p.ID)
+	db := common.Getdb()
+	var p Products
+	err := db.Get(&p, _sql, id)
 
-	for rows.Next() {
-		rows.StructScan(p)
-	}
+	// rows, err := common.FetchOne(_sql, p.ID)
+	// defer rows.Close()
+
+	// for rows.Next() {
+	// 	rows.StructScan(p)
+	// }
 	fmt.Printf("p: %T, %v\n", p, p)
-	return *p, err
+	return p, err
 }
 
 func CreateProduct(p *Products) {
