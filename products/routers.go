@@ -3,7 +3,6 @@ package products
 import (
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -11,14 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// "errors"
-// "net/http"
-// "strconv"
-
 func ProductsRegister(router *gin.RouterGroup) {
 	router.POST("/", ProductCreate)
 	router.PUT("/:id", ProductUpdate)
-	//router.DELETE("/:slug", ProductDelete)
+	router.DELETE("/:id", ProductDelete)
 	//router.POST("/:slug/favorite", ProductFavorite)
 	//router.DELETE("/:slug/favorite", ProductUnfavorite)
 	//router.POST("/:slug/comments", ProductCommentCreate)
@@ -98,7 +93,7 @@ func ProductCreate(c *gin.Context) {
 
 	fmt.Println("fe convert product: ", product)
 	CreateProduct(&product)
-	c.JSON(http.StatusCreated, gin.H{"product": product})
+	//c.JSON(http.StatusCreated, gin.H{"product": product})
 
 	//=======
 	// err := json.Unmarshal([]byte(data), &product)
@@ -113,8 +108,8 @@ func ProductCreate(c *gin.Context) {
 	// product.Labels = "test_lebels"
 	// product.State = 1
 
-	// serializer := ProductSerializer{c, product}
-	// c.JSON(http.StatusCreated, gin.H{"product": serializer.Response(), "result": "OK"})
+	serializer := ProductSerializer{c, product}
+	c.JSON(http.StatusCreated, gin.H{"product": serializer.Response(), "result": "OK"})
 
 }
 
@@ -125,14 +120,44 @@ func ProductUpdate(c *gin.Context) {
 	//var product_body Products
 	c.ShouldBind(&product)
 
-	productmodel, err := GetProductByID(id)
+	//productmodel, err := GetProductByID(id)
+	product.ID = id
+	product.Created_on = common.MakeTimeStamp()
+	product.Created_by = "admin"
+	product.Modified_on = common.MakeTimeStamp()
+	product.Modified_by = "admin"
+	product.State = 1
 
-	log.Println(productmodel)
+	_, err = UpdateProductByID(&product)
 
 	if err != nil {
-		log.Fatal(err)
+		c.JSON(http.StatusNotFound, common.NewError("product", errors.New("update failed: ")))
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"product": product, "status": "updated"})
+
+}
+
+func ProductDelete(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+
+	var product Products
+	//var product_body Products
+	product, err = GetProductByID(id)
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, common.NewError("product", errors.New("delete failed")))
+		return
+	}
+
+	_, err = DeleteProductByID(&product)
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, common.NewError("product", errors.New("delete failed: ")))
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"productID": product.ID, "productName": product.Name, "status": "deleted"})
 
 }

@@ -1,6 +1,7 @@
 package products
 
 import (
+	"database/sql"
 	"fmt"
 	_ "fmt"
 	"log"
@@ -52,6 +53,10 @@ func GetProductByID(id int) (Products, error) {
 	var p Products
 	err := db.Get(&p, _sql, id)
 
+	if err != nil {
+		log.Println(err)
+	}
+
 	// rows, err := common.FetchOne(_sql, p.ID)
 	// defer rows.Close()
 
@@ -72,4 +77,42 @@ func CreateProduct(p *Products) {
 	//fmt.Println(_sql)
 	db := common.Getdb()
 	db.Exec(_sql)
+}
+
+func UpdateProductByID(p *Products) (sql.Result, error) {
+
+	_sql := fmt.Sprintf("UPDATE shop_products SET name='%s', model='%s', price=%f, description='%s', image_url='%s', video_url='%s', capacity=%d, created_on=%d, created_by='%s', modified_on=%d, modified_by='%s',labels='%s', state=%d WHERE id=%d",
+		p.Name, p.Model, p.Price, p.Description, p.Image_url, p.Video_url, p.Capacity,
+		p.Created_on, p.Created_by, p.Modified_on, p.Modified_by,
+		p.Labels, p.State, p.ID,
+	)
+	db := common.Getdb()
+	log.Println(_sql)
+	result, err := db.Exec(_sql)
+	// result, err := db.NamedExec(`UPDATE shop_products SET name:name, model=:model, price=:price, description=:description,
+	//  image_url=:image_url, video_url=:video_url, capacity=:capacity,
+	//  created_on=:created_on created_by=:created_by, modified_on=:modified_on,modified_by=:modified_by,
+	//  labels=:labels,state=:state WHERE id=:id`, p)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	return result, err
+}
+
+func DeleteProductByID(p *Products) (sql.Result, error) {
+
+	_sql := fmt.Sprintf("DELETE FROM shop_products WHERE id=%d", p.ID)
+	db := common.Getdb()
+	log.Println(_sql)
+	result, err := db.Exec(_sql)
+	// result, err := db.NamedExec(`UPDATE shop_products SET name:name, model=:model, price=:price, description=:description,
+	//  image_url=:image_url, video_url=:video_url, capacity=:capacity,
+	//  created_on=:created_on created_by=:created_by, modified_on=:modified_on,modified_by=:modified_by,
+	//  labels=:labels,state=:state WHERE id=:id`, p)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	return result, err
 }
