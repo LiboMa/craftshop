@@ -47,9 +47,12 @@ mysql
 #### Installation
 
 Mysql driver & mapping tools written by GO
-1. go get github.com/jmoiron/sqlx
-2. go get -u github.com/go-redis/redis
-3. go get github.com/jasonlvhit/gocron
+go get github.com/gin-gonic/gin
+go get -u github.com/gin-contrib/cors
+go get github.com/jmoiron/sqlx
+go get -u github.com/go-redis/redis
+go get -u github.com/go-sql-driver/mysql
+go get -u github.com/jasonlvhit/gocron
 
 #### Build
 Linuxbuild="env GOOS=linux GOARCH=amd64 go build"
