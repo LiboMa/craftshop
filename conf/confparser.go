@@ -14,6 +14,7 @@ const (
 )
 
 type Config struct {
+	ServiceHost string `json:"servicehost"`
 	ServicePort int    `json:"serviceport"`
 	RedisDSN    string `json:"redisdsn"`
 	MysqlDSN    string `json:"mysqldsn"`

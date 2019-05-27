@@ -75,8 +75,7 @@ func main() {
 
 		r.Run(":8080")
 	} else {
-
-		r.Run(fmt.Sprintf(":%d", appconfig.ServicePort))
+		r.Run(fmt.Sprintf("%s:%d", appconfig.ServiceHost, appconfig.ServicePort))
 		//r.Run(strconv.Itoa(appconfig.ServicePort))
 
 	}
