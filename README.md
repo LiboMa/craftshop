@@ -51,6 +51,9 @@ Mysql driver & mapping tools written by GO
 2. go get -u github.com/go-redis/redis
 3. go get github.com/jasonlvhit/gocron
 
+#### Build
+Linuxbuild="env GOOS=linux GOARCH=amd64 go build"
+Macbuild="go build"
 #### Examples
 
 go  run main.go

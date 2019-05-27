@@ -14,11 +14,12 @@ const (
 )
 
 type Config struct {
-	RequestLog  string `json:"requestlog"`
-	ErrorLog    string `json:"errorlog"`
 	ServicePort int    `json:"serviceport"`
 	RedisDSN    string `json:"redisdsn"`
 	MysqlDSN    string `json:"mysqldsn"`
+	ENV         string `json:"env"`
+	RequestLog  string `json:"requestlog"`
+	ErrorLog    string `json:"errorlog"`
 }
 
 func LoadConfig(filename *string) Config {

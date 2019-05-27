@@ -36,5 +36,7 @@
     "access_key": "",
     "secret_key": "",
     "redisdsn":"jys-redis-prod-01.8pes7p.ng.0001.apse1.cache.amazonaws.com:6379",
-    "serviceport": 8080 
+    "mysqldsn":"minebit_admin:TWluZWJpdF8yMDE4MTAxNSEhIQo=@tcp(minebit-db-prod2.ctiqvoixbgg5.ap-southeast-1.rds.amazonaws.com:3306)/minebit",
+    "serviceport": 8080,
+    "env": "dev-local"
 }

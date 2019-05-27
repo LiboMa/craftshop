@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/LiboMa/otcmarket/common"
 	"github.com/LiboMa/otcmarket/conf"
@@ -29,7 +30,11 @@ func main() {
 	// fmt.Println(appconfig.RequestLog)
 
 	// init db connection
-	db := common.InitDB()
+	if appconfig.ENV == "dev-local" {
+		appconfig.MysqlDSN = os.Getenv("MYSQL_DSN")
+		appconfig.RedisDSN = os.Getenv("REDIS_DSN")
+	}
+	db := common.InitDB(appconfig.MysqlDSN)
 	defer db.Close()
 	// init redis connection
 	cacheclient := common.InitCache(appconfig.RedisDSN)

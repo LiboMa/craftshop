@@ -75,7 +75,7 @@ func MarketUsdt(c *gin.Context) {
 	json.Unmarshal([]byte(val), &otcTradeMarket)
 
 	if err != nil {
-		c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("Invalid param")))
+		c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("get data failed")))
 		return
 	}
 	//c.JSON(http.StatusOK, gin.H{"market-price": (*otcTradeMarket.Data)[0].Price, "status": otcTradeMarket.Success})

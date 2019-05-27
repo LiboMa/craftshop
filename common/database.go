@@ -3,7 +3,6 @@ package common
 import (
 	"fmt"
 	"log"
-	"os"
 	"reflect"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -18,8 +17,9 @@ type Database struct {
 
 var DB *sqlx.DB
 
-func InitDB() *sqlx.DB {
-	db, err := sqlx.Open("mysql", os.Getenv("MYSQL_DSN"))
+func InitDB(mysql_dsn string) *sqlx.DB {
+	//db, err := sqlx.Open("mysql", os.Getenv("MYSQL_DSN"))
+	db, err := sqlx.Open("mysql", mysql_dsn)
 	if err != nil {
 		log.Fatal(err)
 	}
