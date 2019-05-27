@@ -54,6 +54,7 @@ func MarketList(c *gin.Context) {
 func MarketUsdt(c *gin.Context) {
 	//condition := ArticleModel{}
 	tradetype := c.Query("tradeType")
+	c.Header("Host", "")
 
 	if tradetype == "" || (tradetype != "sell" && tradetype != "buy") {
 		c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("using params, typeType=sell|buy")))
