@@ -48,6 +48,8 @@ mysql
 
 Mysql driver & mapping tools written by GO
 1. go get github.com/jmoiron/sqlx
+2. go get -u github.com/go-redis/redis
+3. go get github.com/jasonlvhit/gocron
 
 #### Examples
 

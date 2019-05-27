@@ -27,7 +27,7 @@ func InitDB() *sqlx.DB {
 	db.SetMaxIdleConns(20)
 	db.SetMaxOpenConns(20)
 	if err := db.Ping(); err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
 	}
 	DB = db
 	return DB
@@ -38,16 +38,17 @@ func FetchOne(query string, cond interface{}) (*sqlx.Rows, error) {
 	rows, err := DB.Queryx(query, cond)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return rows, err
 }
 
 func FetchAll(query string) (*sqlx.Rows, error) {
 
+	log.Println(query)
 	rows, err := DB.Queryx(query)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	return rows, err

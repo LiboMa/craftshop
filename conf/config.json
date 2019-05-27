@@ -1,0 +1,40 @@
+{
+    "name": "otc-usdt-cny-currency",
+    "database": {
+        "reader": {
+            "dbhost": "localhost",
+            "dbname": "otcmarket",
+            "password": "otcmarket"
+        },
+        "writer": {
+            "dbhost": "localhost",
+            "dbname": "otcmarket",
+            "password": "otcmarket"
+        }
+    },
+    "mangodb": {
+        "name": "mango-db",
+        "hosts": []
+    },
+    "cache": {
+        "name": "redis-server",
+        "hosts": [
+            "127.0.0.1:6379"
+        ]
+    },
+    "kafka": {
+        "name": "kafka-borkers",
+        "hosts": [
+            "127.0.0.1:9092"
+        ]
+    },
+    "agent-header": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36",
+    "okexapiURL": "https://www.okex.com/v3/c2c/tradingOrders/book?side=buy&baseCurrency=usdt&quoteCurrency=cny&userType=all&paymentMethod=all",
+    "requestlog": "./request.log",
+    "errorlog": "./error.log",
+    "huobiapiURL": "",
+    "access_key": "",
+    "secret_key": "",
+    "redisdsn":"jys-redis-prod-01.8pes7p.ng.0001.apse1.cache.amazonaws.com:6379",
+    "serviceport": 8080 
+}

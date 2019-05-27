@@ -19,3 +19,20 @@ func NewError(key string, err error) CommonError {
 func MakeTimeStamp() int64 {
 	return time.Now().UnixNano() / int64(time.Second)
 }
+
+// func myLogger() (*log.Logger, error) {
+
+// 	f, err := os.OpenFile("text.log",
+// 		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+// 	if err != nil {
+// 		log.Println(err)
+// 	}
+// 	defer f.Close()
+
+// 	logger := log.New(f, "prefix", log.LstdFlags)
+// 	logger.Println("text to append")
+// 	logger.Println("more text to append")
+
+// 	return logger, err
+
+// }
