@@ -56,6 +56,11 @@ func MarketUsdt(c *gin.Context) {
 	tradetype := c.Query("tradeType")
 	c.Header("Host", "")
 
+	// type Result struct {
+	// 	Price  float64
+	// 	Status bool
+	// }
+
 	if tradetype == "" || (tradetype != "sell" && tradetype != "buy") {
 		c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("using params, typeType=sell|buy")))
 		return
@@ -75,12 +80,15 @@ func MarketUsdt(c *gin.Context) {
 	// get data from db if failure
 	json.Unmarshal([]byte(val), &otcTradeMarket)
 
+	serializer := MarketPriceSerializer{c, otcTradeMarket, tradetype}
+	// result := Result{Price: otcTradeMarket.Data[0].Price, Status: otcTradeMarket.Success}
+
 	if err != nil {
 		c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("get data failed")))
 		return
 	}
 	//c.JSON(http.StatusOK, gin.H{"market-price": (*otcTradeMarket.Data)[0].Price, "status": otcTradeMarket.Success})
-	c.JSON(http.StatusOK, gin.H{key: otcTradeMarket.Data[0], "status": otcTradeMarket.Success})
+	c.JSON(http.StatusOK, gin.H{key: serializer.Response()})
 }
 
 // func MarketRetrieve(c *gin.Context) {

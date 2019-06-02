@@ -1,10 +1,29 @@
 package markets
 
-// import (
-// 	"log"
+import "github.com/gin-gonic/gin"
 
-// 	"github.com/gin-gonic/gin"
-// )
+type MarketPriceSerializer struct {
+	C           *gin.Context
+	MarketPrice OTCTradeMarket
+	TradeType   string
+}
+type MarketPriceResponse struct {
+	Key       string  `json:"-"`
+	Price     float64 `json:"price"`
+	TradeType string  `json:"type", omitedempty`
+	Status    bool    `json:"status"`
+}
+
+func (m *MarketPriceSerializer) Response() *MarketPriceResponse {
+
+	response := MarketPriceResponse{
+		Price:     m.MarketPrice.Data[0].Price,
+		Status:    m.MarketPrice.Success,
+		TradeType: m.TradeType,
+	}
+
+	return &response
+}
 
 // type ProductSerializer struct {
 // 	C        *gin.Context

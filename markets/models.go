@@ -84,21 +84,21 @@ type OTCTradeMarket struct {
 }
 
 type DataList struct {
-	ID       int    `json: id, omitempty`       //	"id": 351182,
-	UID      int    `json: uid, omitempty`      //	"uid": 1759834,
-	UserName string `json: userName, omitempty` //	"userName": "三万里高空",
+	ID       int    `json: id`       //	"id": 351182,
+	UID      int    `json: uid`      //	"uid": 1759834,
+	UserName string `json: userName` //	"userName": "三万里高空",
 	// "merchantLevel": 3,
-	CoinID   int `json: coinId`              //	"coinId": 2(USDT)
-	Currency int `json: currency, omitempty` // "currency": 1,
+	CoinID   int `json: coinId,`   //	"coinId": 2(USDT)
+	Currency int `json: currency,` // "currency": 1,
 	// "tradeType": 1,
 	// "blockType": 1,
 	// "payMethod": "1",
 	// "payTerm": 15,
 	// PayName       []struct{} `json: payName, omitempty`       // "payName": "[{\"bankName\":\"工商银行\",\"bankType\":1,\"id\":2376336}]",
-	MinTradeLimit float64 `json: minTradeLimit`            //"minTradeLimit": 50000.0000000000,
-	MaxTradeLimit float64 `json: maxTradeLimit, omitempty` //"maxTradeLimit": 230800,
-	Price         float64 `json: price`                    //"price": 7.06,
-	TradeCount    float64 `json: tradeCount`               // "tradeCount": 32691.2181330000,
+	MinTradeLimit float64 `json: minTradeLimit` //"minTradeLimit": 50000.0000000000,
+	MaxTradeLimit float64 `json: maxTradeLimit` //"maxTradeLimit": 230800,
+	Price         float64 `json: price`         //"price": 7.06,
+	TradeCount    float64 `json: tradeCount `   // "tradeCount": 32691.2181330000,
 	// "isOnline": true,
 	// "tradeMonthTimes": 2162,
 	// "orderCompleteRate": 99,
