@@ -1,6 +1,8 @@
 package common
 
 import (
+	"log"
+	"os"
 	"time"
 )
 
@@ -36,3 +38,37 @@ func MakeTimeStamp() int64 {
 // 	return logger, err
 
 // }
+
+func GetOrCreateDir(path string) string {
+
+	fileInfo, err := os.Stat(path)
+
+	if os.IsNotExist(err) {
+
+		err = os.Mkdir(path, 0644)
+		log.Println("Create dir", fileInfo)
+		return path
+	}
+	return ""
+
+}
+
+func GetOrCreateDirs(path string) string {
+
+	fileInfo, err := os.Stat(path)
+
+	if os.IsNotExist(err) {
+
+		err = os.MkdirAll(path, 0644)
+		log.Println("Create dir", fileInfo)
+		return path
+	}
+	return ""
+
+}
+
+func Trace(msg string) func() {
+	start := time.Now()
+	log.Printf("enter %s", msg)
+	return func() { log.Printf("exit %s (%s)", msg, time.Since(start)) }
+}

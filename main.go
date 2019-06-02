@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/LiboMa/otcmarket/common"
 	"github.com/LiboMa/otcmarket/conf"
@@ -40,12 +41,19 @@ func main() {
 	cacheclient := common.InitCache(appconfig.RedisDSN)
 	defer cacheclient.Close()
 
-	// init log files
-	// logfile, _ := os.OpenFile(appconfig.RequestLog, os.O_CREATE|os.O_APPEND, 0644)
-	// gin.DefaultWriter = io.MultiWriter(logfile)
+	// init log operator
+	// _file := filepath.Base(appconfig.RequestLog)
+	_ = common.GetOrCreateDir(filepath.Dir(appconfig.RequestLog)) // check dir exist or not and created
 
-	// errlogfile, _ := os.OpenFile(appconfig.ErrorLog, os.O_CREATE|os.O_APPEND, 0644)
-	// gin.DefaultErrorWriter = io.MultiWriter(errlogfile)
+	logfile, err := os.OpenFile(appconfig.RequestLog, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644) //logfile, err := os.Create(appconfig.LogPath)
+	if err != nil {
+		panic(err)
+	}
+	// normal log writter
+	gin.DefaultWriter = logfile // a shortcut of gin.DefaultWriter = io.MultiWriter(logfile)
+	// error log writter
+	gin.DefaultErrorWriter = logfile
+	log.SetOutput(gin.DefaultWriter)
 
 	// start gin
 	r := gin.Default()
