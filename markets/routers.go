@@ -21,12 +21,12 @@ func MarketsRegister(router *gin.RouterGroup) {
 func MarketsAnonymousRegister(router *gin.RouterGroup) {
 	router.GET("/", MarketList)
 	router.GET("/usdtcny", MarketUsdt)
+	router.GET("/cny", MarketCNY)
 	// router.GET("/:id", ProductRetrieve)
 	//router.GET("/:slug/comments", ProductCommentList)
 }
 
 func MarketList(c *gin.Context) {
-	//condition := ArticleModel{}
 	// name := c.Query("name")
 
 	// get data from models
@@ -34,8 +34,6 @@ func MarketList(c *gin.Context) {
 	//articleModels, modelCount, err := FindManyArticle(tag, author, limit, offset, favorited)
 
 	// serialized to json
-	//log, err := common.myLogger()
-
 	var currencyMessage CurrencyMessage
 	err := HttpGetDataBinding("https://api.huobi.com/v1/common/currencys", &currencyMessage)
 
@@ -89,6 +87,46 @@ func MarketUsdt(c *gin.Context) {
 	}
 	//c.JSON(http.StatusOK, gin.H{"market-price": (*otcTradeMarket.Data)[0].Price, "status": otcTradeMarket.Success})
 	c.JSON(http.StatusOK, gin.H{key: serializer.Response()})
+}
+
+func MarketCNY(c *gin.Context) {
+	//condition := ArticleModel{}
+	tradetype := c.Query("tradeType")
+	c.Header("Host", "")
+
+	// type Result struct {
+	// 	Price  float64
+	// 	Status bool
+	// }
+
+	if tradetype == "" || (tradetype != "sell" && tradetype != "buy") {
+		c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("using params, typeType=sell|buy")))
+		return
+	}
+
+	//var otcTradeMarket OTCTradeMarket
+
+	// get data from cache
+	//key := fmt.Sprintf("market-price-cny-%s", tradetype)
+	//client := common.InitCache() //1. slowest method
+	//client := common.GetCache() //2. 3 * times increated
+	//val, err := common.GetCacheItem(key) //3. almost the same to method 2
+	//val, err := client.Get(key).Result()
+	//if err != nil {
+	//	log.Println(err)
+	//	}
+	// get data from db if failure
+	//json.Unmarshal([]byte(val), &otcTradeMarket)
+
+	//serializer := MarketPriceSerializer{c, otcTradeMarket, tradetype}
+	// result := Result{Price: otcTradeMarket.Data[0].Price, Status: otcTradeMarket.Success}
+
+	// if err != nil {
+	// 	c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("get data failed")))
+	// 	return
+	// }
+	//c.JSON(http.StatusOK, gin.H{"market-price": (*otcTradeMarket.Data)[0].Price, "status": otcTradeMarket.Success})
+	c.JSON(http.StatusOK, gin.H{"price": "1"})
 }
 
 // func MarketRetrieve(c *gin.Context) {

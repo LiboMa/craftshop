@@ -24,7 +24,7 @@ func InitCache(redis_dsn string) *redis.Client {
 	return redisclient
 }
 
-func SetCacheItem(key string, v interface{}) error {
+func SetItem(key string, v interface{}) error {
 
 	err := redisclient.Set(key, v, 0).Err()
 
@@ -36,7 +36,7 @@ func SetCacheItem(key string, v interface{}) error {
 
 }
 
-func GetCacheItem(key string) (string, error) {
+func GetItem(key string) (string, error) {
 
 	val, err := redisclient.Get(key).Result()
 	if err != nil {

@@ -60,3 +60,7 @@ Macbuild="go build"
 #### Examples
 
 go  run main.go
+
+#### url
+
+curl -XGET localhost:8601/api/markets/usdtcny?tradeType=buy
