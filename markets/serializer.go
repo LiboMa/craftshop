@@ -20,7 +20,7 @@ func (m *MarketPriceSerializer) Response() *MarketPriceResponse {
 
 	response := MarketPriceResponse{
 		Price:     m.MarketPrice.Data[0].Price,
-		CNY:       8.0,
+		CNY:       1,
 		Currency:  m.MarketPrice.Data[0].Currency,
 		Status:    m.MarketPrice.Success,
 		TradeType: m.TradeType,
