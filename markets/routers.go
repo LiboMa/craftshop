@@ -116,7 +116,7 @@ func MarketCNY(c *gin.Context) {
 	var otcTradeMarket OTCTradeMarket
 
 	// get data from cache
-	key := fmt.Sprintf("market-price-cny-%s", tradetype)
+	key := fmt.Sprintf("market-price-%s", tradetype)
 	val := json.RawMessage(`{"code":200,"message":"成功","totalCount":300,"pageSize":10,"totalPage":30,"currPage":1,"data":[{"id":354157,"uid":86613404,"userName":"潮人码头","merchantLevel":2,"coinId":2,"currency":1,"tradeType":1,"blockType":1,"payMethod":"1","payTerm":15,"payName":"[{\"bankName\":\"商家小号和搬砖的不交易，请取消否则收款卡退回\",\"bankType\":1,\"id\":2594223}]","minTradeLimit":50000.0000000000,"maxTradeLimit":1174800,"price":6.96,"tradeCount":168793.1839090000,"isOnline":true,"tradeMonthTimes":766,"orderCompleteRate":99,"takerLimit":0,"gmtSort":1560927014000}], "success":"true"}`)
 
 	//client := common.GetCache() //2. 3 * times increated
@@ -129,7 +129,7 @@ func MarketCNY(c *gin.Context) {
 	json.Unmarshal([]byte(val), &otcTradeMarket)
 
 	otcTradeMarket.Data[0].Price = 1
-	otcTradeMarket.Data[0].Currency = 1
+	otcTradeMarket.Data[0].Currency = 2
 	otcTradeMarket.Success = true
 
 	serializer := MarketPriceSerializer{c, otcTradeMarket, tradetype}
