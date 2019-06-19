@@ -104,11 +104,21 @@ func MarketCNY(c *gin.Context) {
 		return
 	}
 
-	//var otcTradeMarket OTCTradeMarket
+	// Code       int         `json: code`       // "code": 200,
+	// Message    string      `json: message`    //"message": "成功",
+	// totalCount int         `json: totalCount` // "totalCount": 183,
+	// PageSize   int         `json: pageSize`   // "pageSize": 10,
+	// TotalPage  int         `json: totalPage`  // "totalPage": 19,
+	// CurrPage   int         `json: currPage`   // "currPage": 1,
+	// Data       []*DataList `json: data`       //"data": xx
+	// Success    bool        `json: success`    // "success": true
+
+	var otcTradeMarket OTCTradeMarket
 
 	// get data from cache
-	//key := fmt.Sprintf("market-price-cny-%s", tradetype)
-	//client := common.InitCache() //1. slowest method
+	key := fmt.Sprintf("market-price-cny-%s", tradetype)
+	val := json.RawMessage(`{"code":200,"message":"成功","totalCount":300,"pageSize":10,"totalPage":30,"currPage":1,"data":[{"id":354157,"uid":86613404,"userName":"潮人码头","merchantLevel":2,"coinId":2,"currency":1,"tradeType":1,"blockType":1,"payMethod":"1","payTerm":15,"payName":"[{\"bankName\":\"商家小号和搬砖的不交易，请取消否则收款卡退回\",\"bankType\":1,\"id\":2594223}]","minTradeLimit":50000.0000000000,"maxTradeLimit":1174800,"price":6.96,"tradeCount":168793.1839090000,"isOnline":true,"tradeMonthTimes":766,"orderCompleteRate":99,"takerLimit":0,"gmtSort":1560927014000}], "success":"true"}`)
+
 	//client := common.GetCache() //2. 3 * times increated
 	//val, err := common.GetCacheItem(key) //3. almost the same to method 2
 	//val, err := client.Get(key).Result()
@@ -116,17 +126,21 @@ func MarketCNY(c *gin.Context) {
 	//	log.Println(err)
 	//	}
 	// get data from db if failure
-	//json.Unmarshal([]byte(val), &otcTradeMarket)
+	json.Unmarshal([]byte(val), &otcTradeMarket)
 
-	//serializer := MarketPriceSerializer{c, otcTradeMarket, tradetype}
+	otcTradeMarket.Data[0].Price = 1
+	otcTradeMarket.Data[0].Currency = 1
+	otcTradeMarket.Success = true
+
+	serializer := MarketPriceSerializer{c, otcTradeMarket, tradetype}
 	// result := Result{Price: otcTradeMarket.Data[0].Price, Status: otcTradeMarket.Success}
 
+	c.JSON(http.StatusOK, gin.H{key: serializer.Response()})
 	// if err != nil {
 	// 	c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("get data failed")))
 	// 	return
 	// }
 	//c.JSON(http.StatusOK, gin.H{"market-price": (*otcTradeMarket.Data)[0].Price, "status": otcTradeMarket.Success})
-	c.JSON(http.StatusOK, gin.H{"price": "1"})
 }
 
 // func MarketRetrieve(c *gin.Context) {

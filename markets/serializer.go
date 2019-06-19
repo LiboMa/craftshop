@@ -10,7 +10,6 @@ type MarketPriceSerializer struct {
 type MarketPriceResponse struct {
 	Key       string  `json:"-"`
 	Price     float64 `json:"price"`
-	CNY       float64 `json:"cny"`
 	Currency  int     `json:"currency"`
 	TradeType string  `json:"type", omitedempty`
 	Status    bool    `json:"status"`
@@ -20,7 +19,6 @@ func (m *MarketPriceSerializer) Response() *MarketPriceResponse {
 
 	response := MarketPriceResponse{
 		Price:     m.MarketPrice.Data[0].Price,
-		CNY:       1,
 		Currency:  m.MarketPrice.Data[0].Currency,
 		Status:    m.MarketPrice.Success,
 		TradeType: m.TradeType,
