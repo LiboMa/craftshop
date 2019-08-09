@@ -84,9 +84,9 @@ type OTCTradeMarket struct {
 }
 
 type HuobiMarket struct {
-	Status string        `json:"status"`
-	Ts     int64         `json:"ts"`
-	Data   []*MarketData `json:"data"`
+	Status string       `json:"status"`
+	Ts     int64        `json:"ts"`
+	Data   []MarketData `json:"data"`
 }
 
 type MarketData struct {
