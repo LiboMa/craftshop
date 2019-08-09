@@ -1,6 +1,10 @@
 package markets
 
-import "github.com/gin-gonic/gin"
+import (
+	"log"
+
+	"github.com/gin-gonic/gin"
+)
 
 type MarketPriceSerializer struct {
 	C           *gin.Context
@@ -54,6 +58,7 @@ func (m *HuobiMarketSerializer) Response() *HuobiMarketResponse {
 		if data.Price == 0 || data.Symbol == "" {
 			continue
 		}
+		log.Println(data.Price)
 		newData = append(newData, data)
 	}
 	response := HuobiMarketResponse{
