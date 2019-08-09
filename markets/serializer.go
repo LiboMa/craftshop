@@ -55,10 +55,11 @@ func (m *HuobiMarketSerializer) Response() *HuobiMarketResponse {
 		data.Price = _m.Close
 		data.Symbol = _m.Symbol
 
+		log.Println("Before-->", data.Price)
 		if data.Price == 0 || data.Symbol == "" {
 			continue
 		}
-		log.Println(data.Price)
+		log.Println("after-->", data.Price)
 		newData = append(newData, data)
 	}
 	response := HuobiMarketResponse{
