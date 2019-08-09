@@ -37,12 +37,10 @@ type Task struct {
 }
 
 func (t *Task) handler(tradeType string) {
-
-	//client := common.InitCache("")
 	client := common.GetCache()
 	MarketData, err := GetMarketData(tradeType)
 
-	value, err := json.Marshal(&MarketData)
+	value, err := json.Marshal(MarketData)
 
 	if err != nil {
 		log.Println(err)
@@ -56,7 +54,6 @@ func (t *Task) handler(tradeType string) {
 }
 
 func (t *Task) huobiHandler() {
-
 	//client := common.InitCache("")
 	client := common.GetCache()
 	_huobiMarketData, err := GetHuobiMarket()
@@ -73,14 +70,11 @@ func (t *Task) huobiHandler() {
 	}
 
 	for _, m := range _huobiMarketData.Data {
-
-		if m.Amount != 0 && m.Close != 0 {
-			key := fmt.Sprintf("market-huobi-%s", m.Symbol)
-			value, _ := json.Marshal(m)
-			err = client.Set(key, value, 0).Err()
-			if err != nil {
-				log.Println(err)
-			}
+		key := fmt.Sprintf("market-huobi-%s", m.Symbol)
+		value, _ := json.Marshal(m)
+		err = client.Set(key, value, 0).Err()
+		if err != nil {
+			log.Println(err)
 		}
 	}
 }
