@@ -30,7 +30,7 @@ func (m *MarketPriceSerializer) Response() *MarketPriceResponse {
 // Huobi Market Data Serializer
 type HuobiMarketSerializer struct {
 	C           *gin.Context
-	huobiMarket HuobiMarket
+	huobiMarket *HuobiMarket
 }
 type HuobiMarketResponse struct {
 	Status string `json:"status"`
