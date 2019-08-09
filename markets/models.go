@@ -72,50 +72,50 @@ type CurrencyMessage struct {
 }
 */
 type OTCTradeMarket struct {
-	Code       int         `json: code`       // "code": 200,
-	Message    string      `json: message`    //"message": "成功",
-	totalCount int         `json: totalCount` // "totalCount": 183,
-	PageSize   int         `json: pageSize`   // "pageSize": 10,
-	TotalPage  int         `json: totalPage`  // "totalPage": 19,
-	CurrPage   int         `json: currPage`   // "currPage": 1,
-	Data       []*DataList `json: data`       //"data": xx
-	Success    bool        `json: success`    // "success": true
+	Code       int         `json:"code"`       // "code": 200,
+	Message    string      `json:"message"`    //"message": "成功",
+	totalCount int         `json:"totalCount"` // "totalCount": 183,
+	PageSize   int         `json:"pageSize"`   // "pageSize": 10,
+	TotalPage  int         `json:"totalPage"`  // "totalPage": 19,
+	CurrPage   int         `json:"currPage"`   // "currPage": 1,
+	Data       []*DataList `json:"data"`       //"data": xx
+	Success    bool        `json:"success"`    // "success": true
 
 }
 
 type HuobiMarket struct {
-	Status string        `json: "status"`
-	Ts     int64         `json: "ts"`
-	Data   []*MarketData `json: "data"`
+	Status string        `json:"status"`
+	Ts     int64         `json:"ts"`
+	Data   []*MarketData `json:"data"`
 }
 
 type MarketData struct {
-	Open   float64 `json: "open"`
-	Close  float64 `json: "close"`
-	Low    float64 `json: "low"`
-	High   float64 `json: "high"`
-	Amount float64 `json: "amount"`
-	Count  float64 `json: "count"`
-	Volume float64 `json: "vol"`
-	Symbol string  `json: "symbol"`
+	Open   float64 `json:"open"`
+	Close  float64 `json:"close"`
+	Low    float64 `json:"low"`
+	High   float64 `json:"high"`
+	Amount float64 `json:"amount"`
+	Count  float64 `json:"count"`
+	Volume float64 `json:"vol"`
+	Symbol string  `json:"symbol"`
 }
 
 type DataList struct {
-	ID       int    `json: id`       //	"id": 351182,
-	UID      int    `json: uid`      //	"uid": 1759834,
-	UserName string `json: userName` //	"userName": "三万里高空",
+	ID       int    `json:"id"`       //	"id": 351182,
+	UID      int    `json:"uid"`      //	"uid": 1759834,
+	UserName string `json:"userName"` //	"userName": "三万里高空",
 	// "merchantLevel": 3,
-	CoinID   int `json: coinId,`   //	"coinId": 2(USDT)
-	Currency int `json: currency,` // "currency": 1,
+	CoinID   int `json:"coinId"`   //	"coinId": 2(USDT)
+	Currency int `json:"currency"` // "currency": 1,
 	// "tradeType": 1,
 	// "blockType": 1,
 	// "payMethod": "1",
 	// "payTerm": 15,
 	// PayName       []struct{} `json: payName, omitempty`       // "payName": "[{\"bankName\":\"工商银行\",\"bankType\":1,\"id\":2376336}]",
-	MinTradeLimit float64 `json: minTradeLimit` //"minTradeLimit": 50000.0000000000,
-	MaxTradeLimit float64 `json: maxTradeLimit` //"maxTradeLimit": 230800,
-	Price         float64 `json: price`         //"price": 7.06,
-	TradeCount    float64 `json: tradeCount `   // "tradeCount": 32691.2181330000,
+	MinTradeLimit float64 `json:"minTradeLimit"` //"minTradeLimit": 50000.0000000000,
+	MaxTradeLimit float64 `json:"maxTradeLimit"` //"maxTradeLimit": 230800,
+	Price         float64 `json:"price"`         //"price": 7.06,
+	TradeCount    float64 `json:"tradeCount"`    // "tradeCount": 32691.2181330000,
 	// "isOnline": true,
 	// "tradeMonthTimes": 2162,
 	// "orderCompleteRate": 99,
