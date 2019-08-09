@@ -76,7 +76,7 @@ func (t *Task) huobiHandler() {
 
 		if m.Amount != 0 && m.Close != 0 {
 			key := fmt.Sprintf("market-huobi-%s", m.Symbol)
-			value, _ := json.Marshal(&m)
+			value, _ := json.Marshal(m)
 			err = client.Set(key, value, 0).Err()
 			if err != nil {
 				log.Println(err)
