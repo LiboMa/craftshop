@@ -60,9 +60,9 @@ func (t *Task) huobiHandler() {
 	//client := common.InitCache("")
 	var market MarketData
 	client := common.GetCache()
-	huobiMarketData, err := GetHuobiMarket()
+	_huobiMarketData, err := GetHuobiMarket()
 
-	value, err := json.Marshal(huobiMarketData)
+	value, err := json.Marshal(_huobiMarketData)
 
 	if err != nil {
 		log.Println(err)
@@ -73,7 +73,7 @@ func (t *Task) huobiHandler() {
 		log.Println(err)
 	}
 
-	for _, m := range huobiMarketData.Data {
+	for _, m := range _huobiMarketData.Data {
 
 		if m.Amount != 0 && m.Close != 0 {
 			key := fmt.Sprintf("market-huobi-%s", m.Symbol)
