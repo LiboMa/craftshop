@@ -74,13 +74,15 @@ func (t *Task) huobiHandler() {
 	}
 
 	for _, m := range huobiMarketData.Data {
-		key := fmt.Sprintf("market-huobi-%s", m.Symbol)
-		value, _ := json.Marshal(&market)
-		err = client.Set(key, value, 0).Err()
-		if err != nil {
-			log.Println(err)
-		}
 
+		if m.Amount != 0 && m.Close != 0 {
+			key := fmt.Sprintf("market-huobi-%s", m.Symbol)
+			value, _ := json.Marshal(&market)
+			err = client.Set(key, value, 0).Err()
+			if err != nil {
+				log.Println(err)
+			}
+		}
 	}
 }
 
