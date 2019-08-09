@@ -137,7 +137,7 @@ func CryptoMarket(c *gin.Context) {
 	}
 	// get data from db if failure
 	json.Unmarshal([]byte(val), &huobiMarket)
-	serializer := HuobiMarketSerializer{c, huobiMarket}
+	serializer := HuobiMarketSerializer{c, &huobiMarket}
 
 	c.JSON(http.StatusOK, gin.H{"symbols": serializer.Response()})
 
