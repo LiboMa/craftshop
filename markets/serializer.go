@@ -44,10 +44,10 @@ type marketDataRes struct {
 }
 
 func (m *HuobiMarketSerializer) Response() *HuobiMarketResponse {
-
+	data := marketDataRes{}
 	newData := make([]marketDataRes, len(m.huobiMarket.Data))
 	for _, _m := range m.huobiMarket.Data {
-		data := marketDataRes{}
+
 		if _m.Close == 0 || _m.Symbol == "" {
 			continue
 		}
