@@ -48,6 +48,9 @@ func (m *HuobiMarketSerializer) Response() *HuobiMarketResponse {
 	newData := make([]HuobiMarketData, len(m.huobiMarket.Data))
 	for _, _m := range m.huobiMarket.Data {
 		data := HuobiMarketData{}
+		if _m.Close == 0 && _m.Symbol == "" {
+			continue
+		}
 		data.Price = _m.Close
 		data.Symbol = _m.Symbol
 		newData = append(newData, data)
