@@ -119,10 +119,10 @@ func CryptoMarket(c *gin.Context) {
 	var key string
 	var val string
 
-	if symbol == "" || (symbol != "sell" && symbol != "buy") {
-		c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("using params, symbol=eth_usdt")))
-		return
-	}
+	// if symbol == "" || (symbol != "sell" && symbol != "buy") {
+	// 	c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("using params, symbol=eth_usdt")))
+	// 	return
+	// }
 	// get data from cache
 	if symbol != "" {
 		key = fmt.Sprintf("market-huobi-%s", symbol)
