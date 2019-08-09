@@ -44,8 +44,8 @@ func main() {
 	// _file := filepath.Base(appconfig.RequestLog)
 	_ = common.GetOrCreateDir(filepath.Dir(appconfig.RequestLog)) // check dir exist or not and created
 
-	// logfile, err := os.OpenFile(appconfig.RequestLog, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644) //logfile, err := os.Create(appconfig.LogPath)
-	logfile, err := os.OpenFile("./request.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644) //logfile, err := os.Create(appconfig.LogPath)
+	logfile, err := os.OpenFile(appconfig.RequestLog, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644) //logfile, err := os.Create(appconfig.LogPath)
+	//logfile, err := os.OpenFile("./request.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644) //logfile, err := os.Create(appconfig.LogPath)
 	if err != nil {
 		panic(err)
 	}
