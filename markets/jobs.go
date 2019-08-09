@@ -68,9 +68,17 @@ func (t *Task) huobiHandler() {
 	}
 	key := fmt.Sprintf("market-huobi")
 	err = client.Set(key, value, 0).Err()
-
 	if err != nil {
 		log.Println(err)
+	}
+
+	for _, m := range MarketData.Data {
+		key := fmt.Sprintf("market-huobi-%s", m.Symbol)
+		err = client.Set(key, value, 0).Err()
+		if err != nil {
+			log.Println(err)
+		}
+
 	}
 }
 
