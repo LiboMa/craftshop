@@ -58,7 +58,6 @@ func (t *Task) handler(tradeType string) {
 func (t *Task) huobiHandler() {
 
 	//client := common.InitCache("")
-	var market MarketData
 	client := common.GetCache()
 	_huobiMarketData, err := GetHuobiMarket()
 
@@ -77,7 +76,7 @@ func (t *Task) huobiHandler() {
 
 		if m.Amount != 0 && m.Close != 0 {
 			key := fmt.Sprintf("market-huobi-%s", m.Symbol)
-			value, _ := json.Marshal(&market)
+			value, _ := json.Marshal(&m)
 			err = client.Set(key, value, 0).Err()
 			if err != nil {
 				log.Println(err)
