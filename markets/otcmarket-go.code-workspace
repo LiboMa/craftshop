@@ -5,6 +5,12 @@
 		},
 		{
 			"path": "/Users/liboma/Documents/mydevs/go/src/github.com/LiboMa/otcmarketOrdersScheduler"
+		},
+		{
+			"path": "/Users/liboma/Documents/mydevs/go/src/github.com/LiboMa/otcmarket-api-demo/api_demo/python-demo"
+		},
+		{
+			"path": "/Users/liboma/Documents/mydevs/go/src/github.com/LiboMa/otcmarket-api-demo/api_demo/java-demo"
 		}
 	],
 	"settings": {

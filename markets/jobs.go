@@ -22,6 +22,16 @@ func GetMarketData(tradeType string) (*OTCTradeMarket, error) {
 	return &otcTradeMarket, err
 }
 
+func GetHuobiMarket() (*HuobiMarket, error) {
+	var huobiMarket HuobiMarket
+	requestURL := "https://api.huobipro.com/market/tickers"
+	err := HttpGetDataBinding(requestURL, &huobiMarket)
+	if err != nil {
+		log.Println(err)
+	}
+	return &huobiMarket, err
+}
+
 type Task struct {
 	counter int
 }
@@ -45,11 +55,31 @@ func (t *Task) handler(tradeType string) {
 	}
 }
 
+func (t *Task) huobiHandler() {
+
+	//client := common.InitCache("")
+	client := common.GetCache()
+	MarketData, err := GetHuobiMarket()
+
+	value, err := json.Marshal(&MarketData)
+
+	if err != nil {
+		log.Println(err)
+	}
+	key := fmt.Sprintf("market-huobi")
+	err = client.Set(key, value, 0).Err()
+
+	if err != nil {
+		log.Println(err)
+	}
+}
+
 func TaskRunner(duration uint64) {
 
 	s := gocron.NewScheduler()
 	var task Task
 	s.Every(duration).Seconds().Do(task.handler, "buy")
 	s.Every(duration).Seconds().Do(task.handler, "sell")
+	s.Every(duration).Seconds().Do(task.huobiHandler)
 	<-s.Start()
 }

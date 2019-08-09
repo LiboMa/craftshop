@@ -30,13 +30,14 @@
     },
     "agent-header": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36",
     "okexapiURL": "https://www.okex.com/v3/c2c/tradingOrders/book?side=buy&baseCurrency=usdt&quoteCurrency=cny&userType=all&paymentMethod=all",
+    "huoapiURL": "https://api.huobipro.com/market/tickers"
     "requestlog": "./request.log",
     "errorlog": "./error.log",
     "huobiapiURL": "",
     "access_key": "",
     "secret_key": "",
-    "redisdsn":"jys-redis-prod-01.8pes7p.ng.0001.apse1.cache.amazonaws.com:6379",
-    "mysqldsn":"db_user:db_password@tcp(db_host:3306)/db_name",
+    "redisdsn": "jys-redis-prod-01.8pes7p.ng.0001.apse1.cache.amazonaws.com:6379",
+    "mysqldsn": "db_user:db_password@tcp(db_host:3306)/db_name",
     "servicehost": "0.0.0.0",
     "serviceport": 8080,
     "env": "dev-local"

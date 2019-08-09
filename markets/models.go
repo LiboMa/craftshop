@@ -83,6 +83,23 @@ type OTCTradeMarket struct {
 
 }
 
+type HuobiMarket struct {
+	Status string        `json: status`
+	Ts     int64         `json: ts`
+	Data   []*MarketData `json: data`
+}
+
+type MarketData struct {
+	Open   float64 `json: open`
+	Close  float64 `json: close`
+	Low    float64 `json: low`
+	High   float64 `json: high`
+	Amount float64 `json: amount`
+	Count  float64 `json: count`
+	Volume float64 `json: vol`
+	Symbol float64 `json: Symbol`
+}
+
 type DataList struct {
 	ID       int    `json: id`       //	"id": 351182,
 	UID      int    `json: uid`      //	"uid": 1759834,

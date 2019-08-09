@@ -20,15 +20,14 @@ func main() {
 
 	configfile := flag.String("conf", "config.json", "specify json conf file for init server")
 	flag.Parse()
-
 	if configfile == nil {
 		log.Fatal("a json format file needed")
 	}
 
 	appconfig := conf.LoadConfig(configfile)
 
-	//fmt.Println(appconfig.RedisDSN)
-	// fmt.Println(appconfig.RequestLog)
+	fmt.Println(appconfig.RedisDSN)
+	//fmt.Println(appconfig.RequestLog)
 
 	// init db connection
 	if appconfig.ENV == "dev-local" {
@@ -45,7 +44,8 @@ func main() {
 	// _file := filepath.Base(appconfig.RequestLog)
 	_ = common.GetOrCreateDir(filepath.Dir(appconfig.RequestLog)) // check dir exist or not and created
 
-	logfile, err := os.OpenFile(appconfig.RequestLog, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644) //logfile, err := os.Create(appconfig.LogPath)
+	// logfile, err := os.OpenFile(appconfig.RequestLog, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644) //logfile, err := os.Create(appconfig.LogPath)
+	logfile, err := os.OpenFile("./request.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644) //logfile, err := os.Create(appconfig.LogPath)
 	if err != nil {
 		panic(err)
 	}
@@ -76,7 +76,7 @@ func main() {
 		})
 	})
 
-	// db operationss
+	// Schedule Tasks
 	go markets.TaskRunner(30)
 
 	if appconfig.ServicePort == 0 {
