@@ -35,19 +35,19 @@ type HuobiMarketSerializer struct {
 type HuobiMarketResponse struct {
 	Status string `json:"status"`
 	Ts     int64  `json:"ts"`
-	Data   []_huobiMarketData
+	Data   []marketDataRes
 }
 
-type _huobiMarketData struct {
+type marketDataRes struct {
 	Price  float64 `json:"price"`
 	Symbol string  `json:"symbol"`
 }
 
 func (m *HuobiMarketSerializer) Response() *HuobiMarketResponse {
 
-	newData := make([]_huobiMarketData, len(m.huobiMarket.Data))
+	newData := make([]marketDataRes, len(m.huobiMarket.Data))
 	for _, _m := range m.huobiMarket.Data {
-		data := _huobiMarketData{}
+		data := marketDataRes{}
 		if _m.Close == 0 && _m.Symbol == "" {
 			continue
 		}
