@@ -90,14 +90,14 @@ type HuobiMarket struct {
 }
 
 type MarketData struct {
-	Open   float64 `json: open`
-	Close  float64 `json: close`
-	Low    float64 `json: low`
-	High   float64 `json: high`
-	Amount float64 `json: amount`
-	Count  float64 `json: count`
-	Volume float64 `json: vol`
-	Symbol float64 `json: Symbol`
+	Open   float64 `json: "open"`
+	Close  float64 `json: "close"`
+	Low    float64 `json: "low"`
+	High   float64 `json: "high"`
+	Amount float64 `json: "amount"`
+	Count  float64 `json: "count"`
+	Volume float64 `json: "vol"`
+	Symbol string  `json: "symbol"`
 }
 
 type DataList struct {
