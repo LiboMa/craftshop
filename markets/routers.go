@@ -139,6 +139,6 @@ func CryptoMarket(c *gin.Context) {
 	json.Unmarshal([]byte(val), &huobiMarket)
 	serializer := HuobiMarketSerializer{c, &huobiMarket}
 
-	c.JSON(http.StatusOK, gin.H{"symbols": serializer.Response()})
+	c.JSON(http.StatusOK, serializer.Response())
 
 }
