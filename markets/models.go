@@ -148,7 +148,7 @@ func GetHttpRequestBody(url string, datachan chan []byte) []byte {
 func HttpGetDataBinding(url string, dataStruct interface{}) error {
 
 	// make channel for fetching url
-	datachan := make(chan []byte, 1)
+	datachan := make(chan []byte, 10)
 
 	go GetHttpRequestBody(url, datachan)
 	err := json.Unmarshal(<-datachan, &dataStruct)

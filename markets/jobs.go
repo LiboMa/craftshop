@@ -62,7 +62,7 @@ func (t *Task) huobiHandler() {
 	client := common.GetCache()
 	huobiMarketData, err := GetHuobiMarket()
 
-	value, err := json.Marshal(&huobiMarketData)
+	value, err := json.Marshal(huobiMarketData)
 
 	if err != nil {
 		log.Println(err)
