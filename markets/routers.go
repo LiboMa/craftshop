@@ -168,8 +168,11 @@ func SingleCryptoMarket(c *gin.Context) {
 	// get data from db if failure
 	json.Unmarshal([]byte(val), &huobiMarketData)
 	//serializer := HuobiMarketSerializer{c, &huobiMarket}
+	response := marketDataRes{}
+	response.Price = huobiMarketData.Close
+	response.Symbol = huobiMarketData.Symbol
 
 	// empty bug here:?
-	c.JSON(http.StatusOK, huobiMarketData)
+	c.JSON(http.StatusOK, response)
 
 }
