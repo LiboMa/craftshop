@@ -23,6 +23,7 @@ func MarketsAnonymousRegister(router *gin.RouterGroup) {
 	router.GET("/usdt_cny", MarketUsdt)
 	router.GET("/cny_cny", MarketCNY)
 	router.GET("/symbols", CryptoMarket)
+	router.GET("/symbols/:symbol", SingleCryptoMarket)
 	// router.GET("/:id", ProductRetrieve)
 	//router.GET("/:slug/comments", ProductCommentList)
 }
@@ -139,6 +140,36 @@ func CryptoMarket(c *gin.Context) {
 	json.Unmarshal([]byte(val), &huobiMarket)
 	serializer := HuobiMarketSerializer{c, &huobiMarket}
 
+	// empty bug here:?
 	c.JSON(http.StatusOK, serializer.Response())
+
+}
+
+func SingleCryptoMarket(c *gin.Context) {
+	symbol := c.Param("symbol")
+	c.Header("Host", "")
+
+	var huobiMarketData MarketData
+	var key string
+	var val string
+
+	// if symbol == "" || (symbol != "sell" && symbol != "buy") {
+	// 	c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("using params, symbol=eth_usdt")))
+	// 	return
+	// }
+	// get data from cache
+	key = fmt.Sprintf("market-huobi-%s", symbol)
+
+	client := common.GetCache() //2. 3 * times increated
+	val, err := client.Get(key).Result()
+	if err != nil {
+		log.Println(err)
+	}
+	// get data from db if failure
+	json.Unmarshal([]byte(val), &huobiMarketData)
+	//serializer := HuobiMarketSerializer{c, &huobiMarket}
+
+	// empty bug here:?
+	c.JSON(http.StatusOK, huobiMarketData)
 
 }
