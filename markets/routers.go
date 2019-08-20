@@ -99,7 +99,7 @@ func MarketUsdtv2(c *gin.Context) {
 	var otcTradeMarket OTCTradeMarket
 
 	// get data from cache
-	key := fmt.Sprintf("marketPrice")
+	key := fmt.Sprintf("market-price-%s", tradetype)
 	//client := common.InitCache() //1. slowest method
 	client := common.GetCache() //2. 3 * times increated
 	//val, err := common.GetCacheItem(key) //3. almost the same to method 2
@@ -118,7 +118,7 @@ func MarketUsdtv2(c *gin.Context) {
 		return
 	}
 	//c.JSON(http.StatusOK, gin.H{"market-price": (*otcTradeMarket.Data)[0].Price, "status": otcTradeMarket.Success})
-	c.JSON(http.StatusOK, gin.H{key: serializer.Response()})
+	c.JSON(http.StatusOK, gin.H{"data": serializer.Response()})
 }
 func MarketCNY(c *gin.Context) {
 	tradetype := c.Query("tradeType")
@@ -154,7 +154,7 @@ func MarketCNYv2(c *gin.Context) {
 	var otcTradeMarket OTCTradeMarket
 
 	// get data from cache
-	key := fmt.Sprintf("market-price-%s", tradetype)
+	key := fmt.Sprintf("market-price-%s", tradetype
 	val := json.RawMessage(`{"code":200,"message":"成功","totalCount":300,"pageSize":10,"totalPage":30,"currPage":1,"data":[{"id":354157,"uid":86613404,"userName":"潮人码头","merchantLevel":2,"coinId":2,"currency":1,"tradeType":1,"blockType":1,"payMethod":"1","payTerm":15,"payName":"[{\"bankName\":\"商家小号和搬砖的不交易，请取消否则收款卡退回\",\"bankType\":1,\"id\":2594223}]","minTradeLimit":50000.0000000000,"maxTradeLimit":1174800,"price":6.96,"tradeCount":168793.1839090000,"isOnline":true,"tradeMonthTimes":766,"orderCompleteRate":99,"takerLimit":0,"gmtSort":1560927014000}], "success":"true"}`)
 
 	json.Unmarshal([]byte(val), &otcTradeMarket)
@@ -166,7 +166,7 @@ func MarketCNYv2(c *gin.Context) {
 	serializer := MarketPriceSerializer{c, otcTradeMarket, tradetype}
 	// result := Result{Price: otcTradeMarket.Data[0].Price, Status: otcTradeMarket.Success}
 
-	c.JSON(http.StatusOK, gin.H{key: serializer.Response()})
+	c.JSON(http.StatusOK, gin.H{"data": serializer.Response()})
 	// if err != nil {
 	// 	c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("get data failed")))
 	// 	return
