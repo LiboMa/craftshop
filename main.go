@@ -14,6 +14,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/*CORS middleware settings*/
+// func CORSMiddleware() gin.HandlerFunc {
+//     return func(c *gin.Context) {
+//         c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+//         c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+//         c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+//         c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+//         if c.Request.Method == "OPTIONS" {
+//             c.AbortWithStatus(204)
+//             return
+//         }
+
+//         c.Next()
+//     }
+// }
+
 func main() {
 
 	// get config from config file
@@ -61,7 +78,7 @@ func main() {
 	//
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"}
-	config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "x-requested-with"}
+	config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization", "x-requested-with"}
 	config.AllowMethods = []string{"*"}
 	r.Use(cors.New(config))
 

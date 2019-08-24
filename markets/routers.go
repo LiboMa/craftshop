@@ -117,7 +117,6 @@ func MarketUsdtv2(c *gin.Context) {
 		c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("get data failed")))
 		return
 	}
-	//c.JSON(http.StatusOK, gin.H{"market-price": (*otcTradeMarket.Data)[0].Price, "status": otcTradeMarket.Success})
 	c.JSON(http.StatusOK, gin.H{"data": serializer.Response()})
 }
 func MarketCNY(c *gin.Context) {
