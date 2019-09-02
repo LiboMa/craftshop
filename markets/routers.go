@@ -12,7 +12,7 @@ import (
 )
 
 func MarketsRegister(router *gin.RouterGroup) {
-	// router.POST("/", ProductCreate)
+	router.POST("/login", LoginPage)
 	// router.PUT("/:id", ProductUpdate)
 	// router.DELETE("/:id", ProductDelete)
 
@@ -53,6 +53,29 @@ func MarketList(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"markets": currencyMessage})
 }
 
+func LoginPage(c *gin.Context) {
+	// name := c.Query("name")
+
+	// get data from models
+	// marketList, err := GetMarketList()
+	//articleModels, modelCount, err := FindManyArticle(tag, author, limit, offset, favorited)
+
+	// serialized to json
+	//var currencyMessage CurrencyMessage
+	//err := HttpGetDataBinding("https://api.huobi.com/v1/common/currencys", &currencyMessage)
+
+	//if err != nil {
+	//	c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("Invalid param")))
+	//	return
+	//}
+	// return http with json body
+	//var users = json.RawMessage(`[{"username" : "akbar", "email": "akb@r.app"}, {"username" : "arkan", "email": "ark@n.app"}]`)
+
+	// serializer := MarketsSerializer{c, productList}
+	// c.JSON(http.StatusOK, gin.H{"markets": serializer.Response()})
+	c.JSON(http.StatusOK, gin.H{"user": "driyan@qq.com", "token": "abc123xxxx"})
+}
+
 func MarketUsdt(c *gin.Context) {
 	//condition := ArticleModel{}
 	tradetype := c.Query("tradeType")
@@ -75,15 +98,11 @@ func MarketUsdt(c *gin.Context) {
 	}
 	// get data from db if failure
 	json.Unmarshal([]byte(val), &otcTradeMarket)
-
 	serializer := MarketPriceSerializer{c, otcTradeMarket, tradetype}
-	// result := Result{Price: otcTradeMarket.Data[0].Price, Status: otcTradeMarket.Success}
-
 	if err != nil {
 		c.JSON(http.StatusNotFound, common.NewError("markets", errors.New("get data failed")))
 		return
 	}
-	//c.JSON(http.StatusOK, gin.H{"market-price": (*otcTradeMarket.Data)[0].Price, "status": otcTradeMarket.Success})
 	c.JSON(http.StatusOK, gin.H{key: serializer.Response()})
 }
 
