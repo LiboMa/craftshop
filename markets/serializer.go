@@ -18,9 +18,14 @@ type MarketPriceResponse struct {
 }
 
 func (m *MarketPriceSerializer) Response() *MarketPriceResponse {
-
+	var offset float64
+	if m.TradeType == "buy" {
+		offset = 1 * (1 + 0.01)
+	} else if m.TradeType == "sell" {
+		offset = 1 * (1 - 0.01)
+	}
 	response := MarketPriceResponse{
-		Price:     m.MarketPrice.Data[0].Price,
+		Price:     m.MarketPrice.Data[0].Price * offset,
 		Currency:  m.MarketPrice.Data[0].Currency,
 		Status:    m.MarketPrice.Success,
 		TradeType: m.TradeType,
